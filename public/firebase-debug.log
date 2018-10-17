@@ -1,0 +1,25 @@
+[debug] [2018-10-16T02:39:41.303Z] ----------------------------------------------------------------------
+[debug] [2018-10-16T02:39:41.305Z] Command:       /usr/local/bin/node /usr/local/bin/firebase serve --only hosting
+[debug] [2018-10-16T02:39:41.305Z] CLI Version:   5.0.1
+[debug] [2018-10-16T02:39:41.305Z] Platform:      darwin
+[debug] [2018-10-16T02:39:41.305Z] Node Version:  v8.11.0
+[debug] [2018-10-16T02:39:41.305Z] Time:          Mon Oct 15 2018 21:39:41 GMT-0500 (CDT)
+[debug] [2018-10-16T02:39:41.305Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-10-16T02:39:41.319Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-10-16T02:39:41.319Z] > authorizing via signed-in user
+[debug] [2018-10-16T02:39:41.319Z] [iam] checking project weather-pwa-6f9c0 for permissions ["firebase.projects.get"]
+[debug] [2018-10-16T02:39:41.321Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/weather-pwa-6f9c0:testIamPermissions  
+
+[debug] [2018-10-16T02:39:41.919Z] <<< HTTP RESPONSE 200
+[debug] [2018-10-16T02:39:41.920Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/weather-pwa-6f9c0  
+ 
+[debug] [2018-10-16T02:39:42.125Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from '/Users/cxg/Desktop/your-first-pwapp-master/work'...
+[info] 
+[debug] [2018-10-16T02:39:42.127Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/408030974554/clients/_:getWebAppConfig  
+ 
+[debug] [2018-10-16T02:39:42.436Z] <<< HTTP RESPONSE 200
+[info] i  hosting: Serving hosting files from: public
+[info] ✔  hosting: Local server: http://localhost:5000
