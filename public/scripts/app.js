@@ -64,6 +64,30 @@
     app.toggleAddDialog(false);
   });
 
+    /*****************************************************************************
+   *
+   * Section for deletion
+   *
+   ****************************************************************************/
+  var main = document.getElementsByClassName("main")[0];
+    main.addEventListener("click", function(e) {
+      var e = e || window.event;
+      var target = e.target || e.srcElement;
+      if (target.className == 'delete-icon') {
+        var index = 0;
+        for (var i=0; i<app.selectedCities.length; i++) {
+          if (app.selectedCities[i].key == target.alt) {
+            index = i;
+            break;
+          }
+        }
+        delete app.selectedCities[index];
+        app.selectedCities = app.selectedCities.filter(Boolean);
+        localStorage.clear;
+        app.saveSelectedCities();
+        location.reload(true);
+      }
+    })
 
   /*****************************************************************************
    *
@@ -94,6 +118,7 @@
     if (!card) {
       card = app.cardTemplate.cloneNode(true);
       card.classList.remove('cardTemplate');
+      card.querySelector('.city-key').textContent = data.key;
       card.querySelector('.location').textContent = data.label;
       card.removeAttribute('hidden');
       app.container.appendChild(card);
@@ -114,6 +139,7 @@
     }
     cardLastUpdatedElem.textContent = data.created;
 
+    card.querySelector('.delete-icon').alt = data.key;
     card.querySelector('.description').textContent = current.text;
     card.querySelector('.date').textContent = current.date;
     card.querySelector('.current .icon').classList.add(app.getIconClass(current.code));
@@ -201,7 +227,7 @@
         }
       } else {
         // Return the initial weather forecast since no data is available.
-        app.updateForecastCard(initialWeatherForecast);
+        //app.updateForecastCard(initialWeatherForecast);
       }
     };
     request.open('GET', url);
@@ -343,23 +369,25 @@
 
   // TODO add startup code here
   app.selectedCities = localStorage.selectedCities;
+  console.log(localStorage.selectedCities);
   if (app.selectedCities) {
     app.selectedCities = JSON.parse(app.selectedCities);
     app.selectedCities.forEach(function(city) {
       app.getForecast(city.key, city.label);
     });
-  } else {
-    /* The user is using the app for the first time, or the user has not
-     * saved any cities, so show the user some fake data. A real app in this
-     * scenario could guess the user's location via IP lookup and then inject
-     * that data into the page.
-     */
-    app.updateForecastCard(initialWeatherForecast);
-    app.selectedCities = [
-      {key: initialWeatherForecast.key, label: initialWeatherForecast.label}
-    ];
-    app.saveSelectedCities();
   }
+  // } else {
+  //    The user is using the app for the first time, or the user has not
+  //    * saved any cities, so show the user some fake data. A real app in this
+  //    * scenario could guess the user's location via IP lookup and then inject
+  //    * that data into the page.
+     
+  //   app.updateForecastCard(initialWeatherForecast);
+  //   app.selectedCities = [
+  //     {key: initialWeatherForecast.key, label: initialWeatherForecast.label}
+  //   ];
+  //   app.saveSelectedCities();
+  // }
 
   // TODO add service worker code here
   if ('serviceWorker' in navigator) {

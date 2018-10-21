@@ -19,6 +19,7 @@ var filesToCache = [
   '/index.html',
   '/scripts/app.js',
   '/styles/inline.css',
+  '/images/trash_bin.png',
   '/images/clear.png',
   '/images/cloudy-scattered-showers.png',
   '/images/cloudy.png',
