@@ -58,6 +58,39 @@ body {
           align-content: stretch;
   background: #ececec; }
 
+.topBar {
+  width: 100%;
+  background: #ececec;
+  position: fixed;
+  box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 2px 9px 1px rgba(0, 0, 0, 0.12), 0 4px 2px -2px rgba(0, 0, 0, 0.2);
+  padding: 16px 16px 0 16px;
+  -webkit-transition: -webkit-transform 0.233s cubic-bezier(0, 0, 0.21, 1) 0.233s;
+  transition: -webkit-transform 0.233s cubic-bezier(0, 0, 0.21, 1) 0.233s;
+  transition: transform 0.233s cubic-bezier(0, 0, 0.21, 1) 0.233s;
+  transition: transform 0.233s cubic-bezier(0, 0, 0.21, 1) 0.233s, -webkit-transform 0.233s cubic-bezier(0, 0, 0.21, 1) 0.1s;
+  z-index: -2;
+  opacity: 0; }
+
+.topBar--visible {
+  opacity: 1; 
+  z-index: 999; }
+
+  .topBar .spare {
+    width: 100%;
+    height: 56px; }
+
+  .listContant {
+    font-size: 1.25em;
+    width: 100%; }
+
+  .listContant .list {
+    margin: 0;
+    list-style: none; }
+
+  .listContant .list li {
+    padding-bottom: 16px;
+  }
+
 .header {
   width: 100%;
   height: 56px;
@@ -108,6 +141,8 @@ body {
     border: none;
     outline: none;
     cursor: pointer; }
+  .header #Bar {
+    background: url(/images/sideBar.svg) center center no-repeat; }
   .header #butRefresh {
     background: url(/images/ic_refresh_white_24px.svg) center center no-repeat; }
   .header #butAdd {
@@ -191,6 +226,23 @@ body {
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch; }
+
+.adjustLayer {
+  background-color: rgba(0, 0, 0, 0.57);
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+  will-change: opacity;
+  -webkit-transition: opacity 0.233s cubic-bezier(0, 0, 0.21, 1);
+  transition: opacity 0.233s cubic-bezier(0, 0, 0.21, 1); }
+
+.adjustLayer--visible {
+  opacity: 1;
+  pointer-events: auto; }
 
 .dialog-container {
   background: rgba(0, 0, 0, 0.57);

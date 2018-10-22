@@ -31,16 +31,30 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="Weather PWA">
   <link rel="apple-touch-icon" href="images/icons/icon-152x152.png">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
   <meta name="msapplication-TileImage" content="images/icons/icon-144x144.png">
   <meta name="msapplication-TileColor" content="#2F3BA2">
 </head>
 <body>
 
-  <header class="header">
+  <header class="header" hidden>
+    <div id="Bar" class="headerButton"></div>
     <h1 id="test" class="header__title">Weather PWA</h1>
     <button id="butRefresh" class="headerButton" aria-label="Refresh"></button>
     <button id="butAdd" class="headerButton" aria-label="Add"></button>
   </header>
+
+  <nav class="topBar">
+    <div class="spare"></div>
+    <div class="listContant">
+      <ul class="list">
+        <li>Weather</li>
+        <li>Safety</li>
+        <li>Elearning notification</li>
+      </ul>
+    </div>
+  </nav>
 
   <main class="main">
     <div class="card cardTemplate weather-forecast" hidden>
@@ -144,6 +158,8 @@
       </div>
     </div>
   </main>
+
+  <div class="adjustLayer"></div>
 
   <div class="dialog-container">
     <div class="dialog">

@@ -34,6 +34,17 @@
    *
    ****************************************************************************/
 
+  document.getElementById('Bar').addEventListener('click', function() {
+    var visibleLayer = document.querySelector('.adjustLayer').classList;
+    var visibleBar =document.querySelector('.topBar').classList;
+    if (visibleLayer == 'adjustLayer') {
+      visibleLayer.add('adjustLayer--visible');
+      visibleBar.add('topBar--visible'); }
+    else {
+      visibleLayer.remove('adjustLayer--visible');
+      visibleBar.remove('topBar--visible'); }
+  });
+
   document.getElementById('butRefresh').addEventListener('click', function() {
     // Refresh all of the forecasts
     app.updateForecasts();
