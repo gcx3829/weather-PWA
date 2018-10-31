@@ -22,6 +22,7 @@
     selectedCities: [],
     spinner: document.querySelector('.loader'),
     cardTemplate: document.querySelector('.cardTemplate'),
+    infoTemplate: document.querySelector('.infoTemplate'),
     container: document.querySelector('.main'),
     addDialog: document.querySelector('.dialog-container'),
     daysOfWeek: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
@@ -43,6 +44,30 @@
     else {
       visibleLayer.remove('adjustLayer--visible');
       visibleBar.remove('topBar--visible'); }
+  });
+
+  document.getElementById('weather').addEventListener('click', function() {
+    var weatherDiv = document.getElementsByClassName('card weather-forecast');
+    var safetyDiv =  document.getElementsByClassName('info safety-info');
+    for (var i=1; i<11; ++i) {
+      safetyDiv[i].setAttribute('hidden', 'true');
+    }
+    for (var i=1; i<3; ++i) {
+      weatherDiv[i].removeAttribute('hidden');
+    }
+    document.getElementById('Bar').click();
+  });
+
+  document.getElementById('safety').addEventListener('click', function() {
+    var weatherDiv = document.getElementsByClassName('card weather-forecast');
+    var safetyDiv =  document.getElementsByClassName('info safety-info');
+    for (var i=1; i<3; ++i) {
+      weatherDiv[i].setAttribute('hidden', 'true');
+    }
+    for (var i=1; i<11; ++i) {
+      safetyDiv[i].removeAttribute('hidden');
+    }
+    document.getElementById('Bar').click();
   });
 
   document.getElementById('butRefresh').addEventListener('click', function() {
@@ -192,6 +217,66 @@
    * Methods for dealing with the model
    *
    ****************************************************************************/
+
+  /*
+   * Methods to get data form Texas DPS RSS website
+   */ 
+  app.getInfo = function() {
+    var url = '/json/Rss.json';
+    if ('caches' in window) {
+      caches.match(url).then(function(response) {
+        if (response) {
+          response.json().then(function updateFromCache(json) {
+            var results = json;
+            for (var i=0; i<10; ++i) {
+              app.updateSafetyInfo(results[i]);
+            }
+          });
+        }
+      });
+    }
+    // Fetch the latest data.
+    var request = new XMLHttpRequest();
+    request.open('GET', url);
+    request.send();
+    request.onreadystatechange = function() {
+      if (request.readyState === XMLHttpRequest.DONE) {
+        if (request.status === 200) {
+          var response = JSON.parse(request.response);
+          for (var i=0; i<10; ++i) {
+            var results = response[i];
+            app.updateSafetyInfo(results);
+          }
+        }
+      } else {
+        // Return the initial weather forecast since no data is available.
+        //app.updateForecastCard(initialWeatherForecast);
+      }
+    };
+   };
+
+  app.updateSafetyInfo = function(data) {
+    //var dataLastUpdated = new Date(data.created);
+    var title = data.title;
+    var link = data.link;
+    var date = data.date;
+    var desc = data.desc;
+
+    var info = app.infoTemplate.cloneNode(true);
+    info.classList.remove('infoTemplate');
+    info.removeAttribute('hidden');
+    app.container.appendChild(info);
+    info.querySelector('.info-title').textContent = title;
+    info.querySelector('.info-time').textContent = date;
+    info.querySelector('.info-title').textContent = title;
+    info.querySelector('.info-content').textContent = desc;
+
+    if (app.isLoading) {
+      app.spinner.setAttribute('hidden', true);
+      app.container.removeAttribute('hidden');
+      app.isLoading = false;
+    }
+  };
 
   /*
    * Gets a forecast for a specific city and updates the card with the data.
@@ -380,13 +465,16 @@
 
   // TODO add startup code here
   app.selectedCities = localStorage.selectedCities;
-  console.log(localStorage.selectedCities);
   if (app.selectedCities) {
     app.selectedCities = JSON.parse(app.selectedCities);
     app.selectedCities.forEach(function(city) {
       app.getForecast(city.key, city.label);
     });
   }
+  app.getInfo();
+
+  //document.getElementById('weather').click();
+  //document.getElementById('weather').click();
   // } else {
   //    The user is using the app for the first time, or the user has not
   //    * saved any cities, so show the user some fake data. A real app in this
@@ -403,7 +491,7 @@
   // TODO add service worker code here
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker
-             .register('./service-worker.js')
-             .then(function() { console.log('Service Worker Registered'); });
+      .register('./service-worker.js')
+      .then(function() { console.log('Service Worker Registered'); });
   }
 })();

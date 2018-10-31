@@ -12,7 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-var dataCacheName = 'weatherData-v1';
+var weatherDataCacheName = 'weatherData-v1';
+var safetyDataCacheName = 'safetyData-v1';
 var cacheName = 'weatherPWA-final-1';
 var filesToCache = [
   '/',
@@ -50,7 +51,7 @@ self.addEventListener('activate', function(e) {
   e.waitUntil(
     caches.keys().then(function(keyList) {
       return Promise.all(keyList.map(function(key) {
-        if (key !== cacheName && key !== dataCacheName) {
+        if (key !== cacheName && key !== weatherDataCacheName) {
           console.log('[ServiceWorker] Removing old cache', key);
           return caches.delete(key);
         }
@@ -73,6 +74,7 @@ self.addEventListener('activate', function(e) {
 self.addEventListener('fetch', function(e) {
   console.log('[Service Worker] Fetch', e.request.url);
   var dataUrl = 'https://query.yahooapis.com/v1/public/yql';
+  var infoUrl = 'http://47.89.249.155/Rss.json';
   if (e.request.url.indexOf(dataUrl) > -1) {
     /*
      * When the request URL contains dataUrl, the app is asking for fresh
@@ -82,14 +84,25 @@ self.addEventListener('fetch', function(e) {
      * https://jakearchibald.com/2014/offline-cookbook/#cache-then-network
      */
     e.respondWith(
-      caches.open(dataCacheName).then(function(cache) {
-        return fetch(e.request).then(function(response){
+      caches.open(weatherDataCacheName).then(function(cache) {
+        return fetch(e.request).then(function(response) {
           cache.put(e.request.url, response.clone());
           return response;
         });
       })
     );
-  } else {
+  } 
+  else if (e.request.url == infoUrl) {
+    e.respondWith(
+      caches.open(safetyDataCacheName).then(function(cache) {
+        return fetch(e.request).then(function(response) {
+          cache.put(e.request.url, response.clone());
+          return response;
+        });
+      })
+    );
+  } 
+  else {
     /*
      * The app is asking for app shell files. In this scenario the app uses the
      * "Cache, falling back to the network" offline strategy:
